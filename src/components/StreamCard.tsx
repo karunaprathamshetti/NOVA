@@ -14,13 +14,13 @@ interface StreamCardProps {
 const StreamCard = ({ username, title, category, viewerCount, thumbnailUrl, avatarUrl, isLive = true }: StreamCardProps) => {
   return (
     <Link to={`/stream/${username}`} className="block group">
-      <div className="glass-card p-3 transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_8px_30px_rgba(59,130,246,0.15)]">
+      <div className="glass-card p-3 transition-all duration-300 hover:-translate-y-1.5" style={{ transition: "all 0.3s ease" }}>
         {/* Thumbnail */}
-        <div className="relative aspect-video rounded-xl overflow-hidden bg-secondary mb-3">
+        <div className="relative aspect-video rounded-xl overflow-hidden bg-muted mb-3">
           {thumbnailUrl ? (
             <img src={thumbnailUrl} alt={title} className="w-full h-full object-cover" />
           ) : (
-            <div className="w-full h-full bg-gradient-to-br from-secondary to-muted flex items-center justify-center">
+            <div className="w-full h-full bg-gradient-to-br from-muted to-secondary flex items-center justify-center">
               <span className="text-muted-foreground text-xs">Preview</span>
             </div>
           )}
@@ -30,7 +30,7 @@ const StreamCard = ({ username, title, category, viewerCount, thumbnailUrl, avat
               LIVE
             </div>
           )}
-          <div className="absolute bottom-2 right-2 flex items-center gap-1 bg-background/70 backdrop-blur-sm px-2 py-0.5 rounded-full text-xs text-foreground">
+          <div className="absolute bottom-2 right-2 flex items-center gap-1 glass-card px-2 py-0.5 text-xs text-card-foreground font-medium" style={{ borderRadius: "9999px", padding: "2px 8px" }}>
             <Eye className="w-3 h-3" />
             {viewerCount.toLocaleString()}
           </div>
@@ -38,17 +38,17 @@ const StreamCard = ({ username, title, category, viewerCount, thumbnailUrl, avat
 
         {/* Info */}
         <div className="flex items-center gap-3">
-          <div className="w-9 h-9 rounded-full bg-secondary shrink-0 overflow-hidden border border-border">
+          <div className="w-9 h-9 rounded-full bg-muted shrink-0 overflow-hidden border border-border">
             {avatarUrl ? (
               <img src={avatarUrl} alt={username} className="w-full h-full object-cover" />
             ) : (
-              <div className="w-full h-full bg-gradient-to-br from-primary/30 to-primary/10 flex items-center justify-center text-xs font-bold text-primary">
+              <div className="w-full h-full bg-gradient-to-br from-primary/20 to-primary/5 flex items-center justify-center text-xs font-bold text-primary">
                 {username[0]?.toUpperCase()}
               </div>
             )}
           </div>
           <div className="min-w-0">
-            <p className="text-sm font-semibold text-foreground truncate group-hover:text-primary transition-colors">
+            <p className="text-sm font-semibold text-card-foreground truncate group-hover:text-primary transition-colors">
               {title}
             </p>
             <p className="text-xs text-muted-foreground truncate">{username} · {category}</p>
