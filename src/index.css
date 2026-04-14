@@ -6,54 +6,65 @@
 
 @layer base {
   :root {
-    --background: 222 47% 6%;
-    --foreground: 210 40% 95%;
+    --background: 210 25% 12%;
+    --foreground: 220 20% 20%;
 
-    --card: 222 30% 10%;
-    --card-foreground: 210 40% 95%;
+    --card: 200 30% 95%;
+    --card-foreground: 220 20% 15%;
 
-    --popover: 222 30% 10%;
-    --popover-foreground: 210 40% 95%;
+    --popover: 200 30% 96%;
+    --popover-foreground: 220 20% 15%;
 
     --primary: 217 91% 60%;
-    --primary-foreground: 222 47% 6%;
+    --primary-foreground: 0 0% 100%;
 
-    --secondary: 215 25% 15%;
-    --secondary-foreground: 210 40% 85%;
+    --secondary: 210 15% 88%;
+    --secondary-foreground: 220 20% 20%;
 
-    --muted: 215 20% 14%;
-    --muted-foreground: 215 20% 55%;
+    --muted: 210 15% 90%;
+    --muted-foreground: 215 12% 50%;
 
     --accent: 217 91% 60%;
-    --accent-foreground: 222 47% 6%;
+    --accent-foreground: 0 0% 100%;
 
     --destructive: 0 84% 60%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 215 20% 18%;
-    --input: 215 20% 14%;
+    --border: 210 20% 85%;
+    --input: 210 15% 92%;
     --ring: 217 91% 60%;
 
-    --radius: 1rem;
+    --radius: 1.25rem;
 
-    /* Neo-Tactile tokens */
-    --glass-bg: rgba(255, 255, 255, 0.05);
-    --glass-border: rgba(255, 255, 255, 0.1);
-    --glass-blur: 20px;
+    /* Water Glass tokens */
+    --glass-bg: rgba(220, 230, 240, 0.55);
+    --glass-bg-strong: rgba(235, 240, 248, 0.75);
+    --glass-border: rgba(255, 255, 255, 0.6);
+    --glass-blur: 24px;
+    --glass-shadow: 0 8px 32px rgba(0, 20, 60, 0.12), 0 2px 8px rgba(0, 20, 60, 0.08);
+    --glass-shadow-hover: 0 12px 40px rgba(0, 20, 60, 0.18), 0 4px 12px rgba(0, 20, 60, 0.1);
+    --glass-inner-glow: inset 0 1px 1px rgba(255, 255, 255, 0.6);
+
     --neon-blue: 217 91% 60%;
-    --neon-glow: 0 0 20px rgba(59, 130, 246, 0.5);
-    --neon-glow-strong: 0 0 30px rgba(59, 130, 246, 0.6), 0 0 60px rgba(59, 130, 246, 0.2);
-    --neu-shadow-light: -4px -4px 10px rgba(42, 58, 80, 0.5);
-    --neu-shadow-dark: 4px 4px 10px rgba(10, 15, 30, 0.8);
-    --neu-inset: inset 2px 2px 5px rgba(10, 15, 30, 0.8), inset -2px -2px 5px rgba(42, 58, 80, 0.3);
+    --neon-glow: 0 0 20px rgba(59, 130, 246, 0.4);
+    --neon-glow-strong: 0 0 30px rgba(59, 130, 246, 0.5), 0 0 60px rgba(59, 130, 246, 0.15);
 
-    --sidebar-background: 222 47% 8%;
-    --sidebar-foreground: 210 40% 85%;
+    /* Neumorphic light style */
+    --neu-shadow: 4px 4px 10px rgba(0, 20, 60, 0.08), -2px -2px 8px rgba(255, 255, 255, 0.7);
+    --neu-shadow-hover: 6px 6px 14px rgba(0, 20, 60, 0.12), -3px -3px 10px rgba(255, 255, 255, 0.8);
+    --neu-inset: inset 3px 3px 6px rgba(0, 20, 60, 0.1), inset -2px -2px 5px rgba(255, 255, 255, 0.5);
+
+    /* Dark neumorphic (for dark toolbar sections) */
+    --neu-dark-shadow: 4px 4px 10px rgba(0, 5, 15, 0.5), -3px -3px 8px rgba(60, 80, 110, 0.25);
+    --neu-dark-inset: inset 2px 2px 5px rgba(0, 5, 15, 0.5), inset -2px -2px 5px rgba(60, 80, 110, 0.2);
+
+    --sidebar-background: 210 20% 14%;
+    --sidebar-foreground: 210 15% 85%;
     --sidebar-primary: 217 91% 60%;
-    --sidebar-primary-foreground: 222 47% 6%;
-    --sidebar-accent: 215 25% 15%;
-    --sidebar-accent-foreground: 210 40% 85%;
-    --sidebar-border: 215 20% 18%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 210 15% 20%;
+    --sidebar-accent-foreground: 210 15% 85%;
+    --sidebar-border: 210 15% 22%;
     --sidebar-ring: 217 91% 60%;
   }
 }
@@ -70,23 +81,37 @@
 }
 
 @layer components {
+  /* === WATER GLASS CARDS === */
   .glass-card {
     background: var(--glass-bg);
     border: 1px solid var(--glass-border);
     backdrop-filter: blur(var(--glass-blur));
     -webkit-backdrop-filter: blur(var(--glass-blur));
     border-radius: 1.25rem;
+    box-shadow: var(--glass-shadow), var(--glass-inner-glow);
   }
 
+  .glass-card-strong {
+    background: var(--glass-bg-strong);
+    border: 1px solid var(--glass-border);
+    backdrop-filter: blur(30px);
+    -webkit-backdrop-filter: blur(30px);
+    border-radius: 1.25rem;
+    box-shadow: var(--glass-shadow), var(--glass-inner-glow);
+  }
+
+  /* === NEUMORPHIC LIGHT BUTTONS (default/white) === */
   .neu-button {
-    background: hsl(215 25% 15%);
-    box-shadow: var(--neu-shadow-light), var(--neu-shadow-dark);
+    background: rgba(240, 244, 250, 0.9);
+    box-shadow: var(--neu-shadow), var(--glass-inner-glow);
+    color: hsl(220 20% 20%);
+    border: 1px solid rgba(255, 255, 255, 0.5);
     transition: all 0.2s ease;
   }
 
   .neu-button:hover {
     transform: translateY(-2px);
-    box-shadow: -6px -6px 14px rgba(42, 58, 80, 0.5), 6px 6px 14px rgba(10, 15, 30, 0.8);
+    box-shadow: var(--neu-shadow-hover), var(--glass-inner-glow);
   }
 
   .neu-button:active {
@@ -94,42 +119,87 @@
     box-shadow: var(--neu-inset);
   }
 
+  /* === NEUMORPHIC PRIMARY BUTTON (blue active) === */
   .neu-button-primary {
     background: hsl(var(--primary));
-    box-shadow: var(--neon-glow);
+    box-shadow: var(--neon-glow), 0 4px 15px rgba(59, 130, 246, 0.3);
     color: hsl(var(--primary-foreground));
+    border: none;
     transition: all 0.2s ease;
   }
 
   .neu-button-primary:hover {
     transform: translateY(-2px);
-    box-shadow: var(--neon-glow-strong);
+    box-shadow: var(--neon-glow-strong), 0 6px 20px rgba(59, 130, 246, 0.4);
   }
 
+  /* === DARK TOOLBAR BUTTONS === */
+  .neu-dark-button {
+    background: hsl(210 20% 16%);
+    box-shadow: var(--neu-dark-shadow);
+    color: hsl(210 15% 65%);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    transition: all 0.2s ease;
+  }
+
+  .neu-dark-button:hover {
+    color: hsl(var(--primary));
+    transform: translateY(-1px);
+  }
+
+  .neu-dark-button.active {
+    background: hsl(var(--primary));
+    color: hsl(var(--primary-foreground));
+    box-shadow: var(--neon-glow);
+  }
+
+  /* === INPUTS (light inset style) === */
   .neu-input {
-    background: hsl(215 20% 10%);
+    background: rgba(235, 240, 248, 0.6);
     box-shadow: var(--neu-inset);
-    border: 1px solid var(--glass-border);
-    border-radius: 9999px;
-    color: hsl(var(--foreground));
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    border-radius: 0.75rem;
+    color: hsl(220 20% 20%);
   }
 
   .neu-input:focus {
     outline: none;
     border-color: hsl(var(--primary));
-    box-shadow: var(--neu-inset), 0 0 10px rgba(59, 130, 246, 0.3);
+    box-shadow: var(--neu-inset), 0 0 0 3px rgba(59, 130, 246, 0.15);
   }
 
+  .neu-input::placeholder {
+    color: hsl(215 12% 55%);
+  }
+
+  /* === DARK INPUTS (for dark sections) === */
+  .neu-input-dark {
+    background: hsl(210 20% 12%);
+    box-shadow: var(--neu-dark-inset);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 0.75rem;
+    color: hsl(210 15% 85%);
+  }
+
+  .neu-input-dark:focus {
+    outline: none;
+    border-color: hsl(var(--primary));
+    box-shadow: var(--neu-dark-inset), 0 0 0 3px rgba(59, 130, 246, 0.2);
+  }
+
+  /* === NEON BORDER (for live player) === */
   .neon-border {
     border: 2px solid hsl(var(--primary));
-    box-shadow: var(--neon-glow), inset 0 0 20px rgba(59, 130, 246, 0.1);
+    box-shadow: var(--neon-glow), inset 0 0 30px rgba(59, 130, 246, 0.08);
   }
 
+  /* === LIVE BADGE === */
   .live-badge {
     @apply inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-bold uppercase tracking-wider;
-    background: rgba(239, 68, 68, 0.2);
+    background: rgba(239, 68, 68, 0.15);
     color: #ef4444;
     border: 1px solid rgba(239, 68, 68, 0.3);
+    backdrop-filter: blur(10px);
   }
 
   .live-dot {
@@ -138,6 +208,7 @@
     animation: pulse-dot 1.5s ease-in-out infinite;
   }
 
+  /* === SPINNER === */
   .neon-spinner {
     width: 40px;
     height: 40px;
@@ -148,11 +219,30 @@
     box-shadow: 0 0 15px rgba(59, 130, 246, 0.4);
   }
 
+  /* === BACKGROUND === */
   .gradient-bg {
-    background: radial-gradient(ellipse at 20% 50%, rgba(59, 130, 246, 0.08) 0%, transparent 50%),
-                radial-gradient(ellipse at 80% 20%, rgba(59, 130, 246, 0.05) 0%, transparent 50%),
-                radial-gradient(ellipse at 50% 80%, rgba(99, 102, 241, 0.04) 0%, transparent 50%),
+    background: radial-gradient(ellipse at 20% 0%, rgba(120, 170, 220, 0.15) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 100%, rgba(59, 130, 246, 0.08) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 50%, rgba(100, 140, 200, 0.05) 0%, transparent 60%),
                 hsl(var(--background));
+  }
+
+  /* === MODAL CARD (brighter) === */
+  .modal-card {
+    background: rgba(245, 248, 255, 0.85);
+    border: 1px solid rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(30px);
+    -webkit-backdrop-filter: blur(30px);
+    border-radius: 1.5rem;
+    box-shadow: 0 20px 60px rgba(0, 20, 60, 0.15), var(--glass-inner-glow);
+  }
+
+  /* === DARK PANEL (for toolbar-like sections) === */
+  .dark-panel {
+    background: hsl(210 22% 14%);
+    border-radius: 1.25rem;
+    box-shadow: 0 8px 30px rgba(0, 5, 15, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.04);
   }
 }
 
@@ -171,6 +261,6 @@
 }
 
 @keyframes glow-pulse {
-  0%, 100% { box-shadow: 0 0 20px rgba(59, 130, 246, 0.4); }
-  50% { box-shadow: 0 0 30px rgba(59, 130, 246, 0.7); }
+  0%, 100% { box-shadow: 0 0 20px rgba(59, 130, 246, 0.3); }
+  50% { box-shadow: 0 0 35px rgba(59, 130, 246, 0.6); }
 }

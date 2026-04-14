@@ -8,18 +8,19 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        default: "neu-button text-foreground rounded-xl",
-        primary: "neu-button-primary rounded-xl font-bold",
-        destructive: "bg-destructive text-destructive-foreground hover:bg-destructive/90 rounded-xl",
-        outline: "border border-border bg-transparent hover:bg-secondary text-foreground rounded-xl",
-        secondary: "bg-secondary text-secondary-foreground hover:bg-secondary/80 rounded-xl",
-        ghost: "hover:bg-secondary hover:text-foreground rounded-xl",
+        default: "neu-button rounded-full",
+        primary: "neu-button-primary rounded-full font-bold",
+        destructive: "bg-destructive text-destructive-foreground hover:bg-destructive/90 rounded-full",
+        outline: "border border-border bg-transparent hover:bg-secondary rounded-full text-card-foreground",
+        secondary: "bg-secondary text-secondary-foreground hover:bg-secondary/80 rounded-full",
+        ghost: "hover:bg-secondary/50 rounded-full text-card-foreground",
         link: "text-primary underline-offset-4 hover:underline",
         hero: "neu-button-primary rounded-full text-base font-bold tracking-wide",
+        dark: "neu-dark-button rounded-full",
       },
       size: {
         default: "h-10 px-5 py-2",
-        sm: "h-9 rounded-xl px-3",
+        sm: "h-9 rounded-full px-4",
         lg: "h-12 px-8 py-3",
         xl: "h-14 px-10 py-4 text-base",
         icon: "h-10 w-10",
