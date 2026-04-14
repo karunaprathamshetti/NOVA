@@ -77,7 +77,7 @@ const Dashboard = () => {
             <select
               value={category}
               onChange={(e) => setCategory(e.target.value)}
-              className="neu-input w-full h-12 px-4 text-sm appearance-none cursor-pointer bg-[hsl(215,20%,10%)]"
+              className="neu-input w-full h-12 px-4 text-sm appearance-none cursor-pointer"
             >
               <option value="Gaming">Gaming</option>
               <option value="Music">Music</option>
