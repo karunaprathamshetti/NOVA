@@ -4,6 +4,7 @@ import StreamCardSkeleton from "@/components/StreamCardSkeleton";
 import { Link } from "react-router-dom";
 import { Play, Radio, Users } from "lucide-react";
 import { useState, useEffect } from "react";
+import heroBg from "@/assets/hero-bg.jpg";
 
 const MOCK_STREAMS = [
   { username: "neon_gamer", title: "Ranked Grind to Diamond 💎", category: "Valorant", viewerCount: 3420, isLive: true },
@@ -23,9 +24,13 @@ const Index = () => {
   }, []);
 
   return (
-    <div className="gradient-bg min-h-screen pt-16">
-      {/* Hero */}
-      <section className="container mx-auto px-4 py-20 md:py-28 text-center">
+    <div className="min-h-screen pt-16 relative">
+      {/* Hero BG */}
+      <div className="absolute inset-0 z-0">
+        <img src={heroBg} alt="" className="w-full h-full object-cover opacity-30" width={1920} height={1080} />
+        <div className="absolute inset-0 bg-gradient-to-b from-background/60 via-background/80 to-background" />
+      </div>
+      <div className="relative z-10">
         <div className="max-w-3xl mx-auto space-y-6" style={{ animation: "fade-in-up 0.8s ease-out forwards" }}>
           <div className="inline-flex items-center gap-2 glass-card px-4 py-1.5 text-xs font-medium text-primary mb-2">
             <Radio className="w-3.5 h-3.5" />
