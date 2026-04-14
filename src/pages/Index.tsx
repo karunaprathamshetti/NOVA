@@ -30,7 +30,7 @@ const Index = () => {
         <img src={heroBg} alt="" className="w-full h-full object-cover opacity-30" width={1920} height={1080} />
         <div className="absolute inset-0 bg-gradient-to-b from-background/60 via-background/80 to-background" />
       </div>
-      <div className="relative z-10">
+      <section className="container mx-auto px-4 py-20 md:py-28 text-center">
         <div className="max-w-3xl mx-auto space-y-6" style={{ animation: "fade-in-up 0.8s ease-out forwards" }}>
           <div className="inline-flex items-center gap-2 glass-card px-4 py-1.5 text-xs font-medium text-primary mb-2">
             <Radio className="w-3.5 h-3.5" />
@@ -84,6 +84,7 @@ const Index = () => {
           )}
         </div>
       </section>
+      </div>
     </div>
   );
 };
