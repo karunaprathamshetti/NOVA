@@ -22,33 +22,33 @@ const Dashboard = () => {
   return (
     <div className="gradient-bg min-h-screen pt-16">
       <div className="container mx-auto px-4 py-10 max-w-4xl space-y-6">
-        <h1 className="text-3xl font-bold text-foreground">Streamer Dashboard</h1>
+        <h1 className="text-3xl font-bold" style={{ color: "hsl(210, 30%, 92%)" }}>Streamer Dashboard</h1>
 
         {/* Stream Key & RTMP */}
         <div className="glass-card p-6 space-y-5">
-          <h2 className="text-lg font-semibold text-foreground flex items-center gap-2">
+          <h2 className="text-lg font-semibold text-card-foreground flex items-center gap-2">
             <Monitor className="w-5 h-5 text-primary" />
             Stream Configuration
           </h2>
 
-          <div className="space-y-3">
-            <label className="text-sm text-muted-foreground">RTMP Server URL</label>
-            <div className="neu-input flex items-center px-4 h-12 text-sm text-foreground/70">
+          <div className="space-y-2">
+            <label className="text-sm text-muted-foreground font-medium">RTMP Server URL</label>
+            <div className="neu-input flex items-center px-4 h-12 text-sm text-card-foreground/70 font-mono">
               {rtmpUrl}
             </div>
           </div>
 
-          <div className="space-y-3">
-            <label className="text-sm text-muted-foreground">Stream Key</label>
+          <div className="space-y-2">
+            <label className="text-sm text-muted-foreground font-medium">Stream Key</label>
             <div className="flex gap-2">
-              <div className="neu-input flex items-center flex-1 px-4 h-12 text-sm text-foreground/70 font-mono">
+              <div className="neu-input flex items-center flex-1 px-4 h-12 text-sm text-card-foreground/70 font-mono">
                 {showKey ? mockStreamKey : "••••••••••••••••••••"}
               </div>
               <button onClick={() => setShowKey(!showKey)} className="neu-button w-12 h-12 flex items-center justify-center rounded-xl">
                 {showKey ? <EyeOff className="w-4 h-4 text-muted-foreground" /> : <Eye className="w-4 h-4 text-muted-foreground" />}
               </button>
               <button onClick={copyKey} className="neu-button w-12 h-12 flex items-center justify-center rounded-xl">
-                {copied ? <Check className="w-4 h-4 text-green-400" /> : <Copy className="w-4 h-4 text-muted-foreground" />}
+                {copied ? <Check className="w-4 h-4 text-green-600" /> : <Copy className="w-4 h-4 text-muted-foreground" />}
               </button>
             </div>
           </div>
@@ -57,12 +57,12 @@ const Dashboard = () => {
         {/* Go Live Controls */}
         <div className="glass-card p-6 space-y-5">
           <div className="flex items-center justify-between">
-            <h2 className="text-lg font-semibold text-foreground">Go Live</h2>
+            <h2 className="text-lg font-semibold text-card-foreground">Go Live</h2>
             <NeoToggle checked={isLive} onChange={setIsLive} label={isLive ? "Live" : "Offline"} />
           </div>
 
-          <div className="space-y-3">
-            <label className="text-sm text-muted-foreground">Stream Title</label>
+          <div className="space-y-2">
+            <label className="text-sm text-muted-foreground font-medium">Stream Title</label>
             <input
               type="text"
               placeholder="What are you streaming today?"
@@ -72,8 +72,8 @@ const Dashboard = () => {
             />
           </div>
 
-          <div className="space-y-3">
-            <label className="text-sm text-muted-foreground">Category</label>
+          <div className="space-y-2">
+            <label className="text-sm text-muted-foreground font-medium">Category</label>
             <select
               value={category}
               onChange={(e) => setCategory(e.target.value)}
@@ -95,16 +95,16 @@ const Dashboard = () => {
 
         {/* OBS Instructions */}
         <div className="glass-card p-6 space-y-4">
-          <h2 className="text-lg font-semibold text-foreground flex items-center gap-2">
+          <h2 className="text-lg font-semibold text-card-foreground flex items-center gap-2">
             <Info className="w-5 h-5 text-primary" />
             OBS Setup Guide
           </h2>
-          <ol className="space-y-2 text-sm text-muted-foreground list-decimal list-inside">
-            <li>Open OBS Studio and go to <span className="text-foreground font-medium">Settings → Stream</span></li>
-            <li>Set Service to <span className="text-foreground font-medium">Custom</span></li>
-            <li>Paste the <span className="text-foreground font-medium">RTMP Server URL</span> above into the Server field</li>
-            <li>Paste your <span className="text-foreground font-medium">Stream Key</span> into the Stream Key field</li>
-            <li>Click <span className="text-foreground font-medium">Start Streaming</span> in OBS, then toggle "Go Live" here</li>
+          <ol className="space-y-2.5 text-sm text-muted-foreground list-decimal list-inside">
+            <li>Open OBS Studio and go to <span className="text-card-foreground font-medium">Settings → Stream</span></li>
+            <li>Set Service to <span className="text-card-foreground font-medium">Custom</span></li>
+            <li>Paste the <span className="text-card-foreground font-medium">RTMP Server URL</span> above into the Server field</li>
+            <li>Paste your <span className="text-card-foreground font-medium">Stream Key</span> into the Stream Key field</li>
+            <li>Click <span className="text-card-foreground font-medium">Start Streaming</span> in OBS, then toggle "Go Live" here</li>
           </ol>
         </div>
       </div>

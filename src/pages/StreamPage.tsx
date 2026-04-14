@@ -38,18 +38,19 @@ const StreamPage = () => {
         <div className="flex flex-col lg:flex-row gap-5">
           {/* Video Player */}
           <div className="flex-1 space-y-4">
-            <div className={`relative aspect-video rounded-2xl overflow-hidden bg-card ${isLive ? "neon-border animate-glow-pulse" : "border border-border"}`}>
+            <div className={`relative aspect-video rounded-2xl overflow-hidden ${isLive ? "neon-border" : "dark-panel"}`}
+              style={isLive ? { animation: "glow-pulse 2s ease-in-out infinite" } : undefined}>
               {isLive ? (
-                <div className="w-full h-full bg-gradient-to-br from-card to-secondary flex items-center justify-center">
-                  <div className="text-center space-y-2">
+                <div className="w-full h-full flex items-center justify-center" style={{ background: "hsl(210, 22%, 14%)" }}>
+                  <div className="text-center space-y-3">
                     <div className="neon-spinner mx-auto" />
-                    <p className="text-sm text-muted-foreground">Connecting to stream...</p>
+                    <p className="text-sm" style={{ color: "hsl(210, 15%, 60%)" }}>Connecting to stream...</p>
                   </div>
                 </div>
               ) : (
-                <div className="w-full h-full flex flex-col items-center justify-center gap-3">
-                  <WifiOff className="w-12 h-12 text-muted-foreground" />
-                  <p className="text-muted-foreground font-medium">Stream is currently offline</p>
+                <div className="w-full h-full flex flex-col items-center justify-center gap-3 dark-panel">
+                  <WifiOff className="w-12 h-12" style={{ color: "hsl(210, 15%, 45%)" }} />
+                  <p className="font-medium" style={{ color: "hsl(210, 15%, 55%)" }}>Stream is currently offline</p>
                 </div>
               )}
               {isLive && (
@@ -63,16 +64,16 @@ const StreamPage = () => {
             {/* Streamer Info */}
             <div className="glass-card p-5">
               <div className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-full bg-gradient-to-br from-primary/30 to-primary/10 flex items-center justify-center text-lg font-bold text-primary border-2 border-primary/30">
+                <div className="w-12 h-12 rounded-full bg-gradient-to-br from-primary/20 to-primary/5 flex items-center justify-center text-lg font-bold text-primary border-2 border-primary/20">
                   {username?.[0]?.toUpperCase()}
                 </div>
                 <div className="flex-1 min-w-0">
-                  <h2 className="text-lg font-bold text-foreground">{username}</h2>
+                  <h2 className="text-lg font-bold text-card-foreground">{username}</h2>
                   <p className="text-sm text-muted-foreground truncate">Ranked Grind to Diamond 💎</p>
                 </div>
                 <div className="flex items-center gap-1.5 text-sm text-muted-foreground">
                   <Eye className="w-4 h-4" />
-                  <span className="font-semibold text-foreground">3,420</span>
+                  <span className="font-semibold text-card-foreground">3,420</span>
                 </div>
               </div>
             </div>
@@ -80,8 +81,8 @@ const StreamPage = () => {
 
           {/* Chat */}
           <div className="w-full lg:w-80 xl:w-96 glass-card flex flex-col h-[calc(100vh-7rem)] lg:h-[calc(100vh-7rem)]">
-            <div className="p-4 border-b border-border">
-              <h3 className="text-sm font-semibold text-foreground">Live Chat</h3>
+            <div className="p-4 border-b border-border/50">
+              <h3 className="text-sm font-semibold text-card-foreground">Live Chat</h3>
             </div>
 
             <div className="flex-1 overflow-y-auto p-4 space-y-3">
@@ -90,13 +91,13 @@ const StreamPage = () => {
                   <span className="font-semibold mr-1.5" style={{ color: msg.color }}>
                     {msg.username}
                   </span>
-                  <span className="text-foreground/80">{msg.content}</span>
+                  <span className="text-card-foreground/80">{msg.content}</span>
                 </div>
               ))}
               <div ref={chatEndRef} />
             </div>
 
-            <form onSubmit={sendMessage} className="p-3 border-t border-border flex gap-2">
+            <form onSubmit={sendMessage} className="p-3 border-t border-border/50 flex gap-2">
               <input
                 type="text"
                 placeholder="Send a message..."

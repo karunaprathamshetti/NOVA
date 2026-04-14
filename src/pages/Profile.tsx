@@ -10,24 +10,24 @@ const Profile = () => {
   return (
     <div className="gradient-bg min-h-screen pt-16">
       <div className="container mx-auto px-4 py-10 max-w-2xl">
-        <div className="glass-card p-8 text-center space-y-5" style={{ animation: "fade-in-up 0.6s ease-out forwards" }}>
+        <div className="modal-card p-8 text-center space-y-5" style={{ animation: "fade-in-up 0.6s ease-out forwards" }}>
           {/* Avatar */}
-          <div className="w-24 h-24 rounded-full mx-auto bg-gradient-to-br from-primary/40 to-primary/10 flex items-center justify-center text-3xl font-bold text-primary border-2 border-primary/30">
+          <div className="w-24 h-24 rounded-full mx-auto bg-gradient-to-br from-primary/25 to-primary/5 flex items-center justify-center text-3xl font-bold text-primary border-2 border-primary/20">
             {username?.[0]?.toUpperCase()}
           </div>
 
           <div>
-            <h1 className="text-2xl font-bold text-foreground">{username}</h1>
+            <h1 className="text-2xl font-bold text-card-foreground">{username}</h1>
             <p className="text-sm text-muted-foreground mt-1">Streaming games, code, and vibes ✨</p>
           </div>
 
           <div className="flex items-center justify-center gap-6 text-sm">
             <div className="text-center">
-              <p className="text-lg font-bold text-foreground">12.4K</p>
+              <p className="text-lg font-bold text-card-foreground">12.4K</p>
               <p className="text-muted-foreground">Followers</p>
             </div>
             <div className="text-center">
-              <p className="text-lg font-bold text-foreground">342</p>
+              <p className="text-lg font-bold text-card-foreground">342</p>
               <p className="text-muted-foreground">Following</p>
             </div>
           </div>
@@ -54,12 +54,12 @@ const Profile = () => {
 
         {/* Past Streams */}
         <div className="mt-8 space-y-4">
-          <h2 className="text-xl font-bold text-foreground">Past Streams</h2>
+          <h2 className="text-xl font-bold" style={{ color: "hsl(210, 30%, 92%)" }}>Past Streams</h2>
           {[1, 2, 3].map((i) => (
-            <div key={i} className="glass-card p-4 flex items-center gap-4 hover:-translate-y-0.5 transition-transform">
-              <div className="w-32 aspect-video rounded-xl bg-secondary shrink-0" />
+            <div key={i} className="glass-card p-4 flex items-center gap-4 hover:-translate-y-0.5 transition-transform cursor-pointer">
+              <div className="w-32 aspect-video rounded-xl bg-muted shrink-0" />
               <div className="min-w-0">
-                <p className="font-semibold text-foreground truncate">Epic Gaming Session #{i}</p>
+                <p className="font-semibold text-card-foreground truncate">Epic Gaming Session #{i}</p>
                 <p className="text-sm text-muted-foreground flex items-center gap-1.5 mt-1">
                   <Calendar className="w-3.5 h-3.5" />
                   {i} days ago · 3h 42m

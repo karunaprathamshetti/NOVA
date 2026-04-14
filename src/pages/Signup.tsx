@@ -10,9 +10,9 @@ const Signup = () => {
 
   return (
     <div className="gradient-bg min-h-screen pt-16 flex items-center justify-center px-4">
-      <div className="glass-card w-full max-w-md p-8 space-y-6" style={{ animation: "fade-in-up 0.6s ease-out forwards" }}>
+      <div className="modal-card w-full max-w-md p-8 space-y-6" style={{ animation: "fade-in-up 0.6s ease-out forwards" }}>
         <div className="text-center space-y-2">
-          <h1 className="text-2xl font-bold text-foreground">Create Account</h1>
+          <h1 className="text-2xl font-bold text-card-foreground">Create Account</h1>
           <p className="text-sm text-muted-foreground">Join StreamFlow and start broadcasting</p>
         </div>
 
