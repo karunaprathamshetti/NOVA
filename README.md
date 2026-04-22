@@ -1,68 +1,68 @@
-# 🌌 Nova
+# 🌌 Nova: The Standalone Streaming Empire
 
-**Nova** is a premium, real-time social streaming platform designed for creators and communities. Built with high-performance technologies and a stunning **Rose & Slate** design aesthetic, Nova offers a seamless experience for broadcasters and viewers alike.
+**Nova** is a premium, real-time standalone streaming ecosystem designed for absolute independence. Built for creators who want full control, Nova removes the need for external software like OBS or third-party platforms like YouTube, offering a native, pro-grade broadcasting experience directly in the browser.
 
-![Nova Preview](https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&q=80&w=2000)
+![Nova Cinematic Intro](https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80&w=2000)
 
-## ✨ Core Features
+## ✨ Core Innovations
 
-- 📹 **Pro-Grade Streaming**: Integrated with OBS Studio for high-definition RTMP broadcasting.
-- 🔍 **Real-time Discovery**: Instant profile search with live-status indicators.
-- 📱 **Social Hub**: Share photos, videos, and text posts with your community.
-- 🔔 **Smart Notifications**: Real-time alerts for follows, going live, and milestones.
-- 🎨 **Rose & Slate Design**: A custom design system featuring glassmorphism, neural inputs, and dynamic animations.
-- 🌓 **Dark/Light Mode**: Fully responsive theme switching that respects user preference.
+- 📹 **Nova Studio**: Direct-from-browser broadcasting in 1080p. No external encoders required.
+- 📡 **Global Stream Persistence**: Our custom-built 'Global Control Room' (Zustand-powered) keeps your camera feed active even as you navigate between pages.
+- 🌍 **Cinematic 3D Intro**: A high-end interactive 3D globe introduction with real-time global node synchronization and a dramatic **Heavy Mist transition**.
+- 🔍 **Real-time Discovery**: Instant profile search with live-status indicators and PostgreSQL Real-time synchronization.
+- 📱 **Community Hub**: Share photos, videos, and text posts directly with your audience.
+- 🔔 **Smart Notifications**: Real-time alerts for follows, going live, and community milestones.
+- 🎨 **Nova Aesthetic**: A curated design system using **Terra Cotta & Slate**, featuring glassmorphism, neural inputs, and cinematic blurs.
 
 ## 🚀 Tech Stack
 
 - **Frontend**: React 18 + Vite
-- **Styling**: Tailwind CSS + Vanilla CSS (Design System)
-- **Backend**: Supabase (PostgreSQL, Auth, Storage, Realtime)
-- **State Management**: Zustand
+- **3D Graphics**: Cobe (Interative Global Engine)
+- **Styling**: Tailwind CSS + Custom Design Tokens
+- **Backend**: Supabase (PostgreSQL, Auth, Storage, Real-time)
+- **State Management**: Zustand (Global Broadcasting Engine)
 - **Icons**: Lucide React
-- **Animations**: Framer Motion
 
 ## 🛠️ Getting Started
 
-### 1. Clone the repository
+### 1. Clone and Install
 ```bash
-git clone https://github.com/your-username/streamcraft-hub.git
-cd streamcraft-hub
-```
-
-### 2. Install dependencies
-```bash
+git clone https://github.com/your-username/nova-stream.git
+cd nova-stream
 npm install
 ```
 
-### 3. Set up Environment Variables
-Create a `.env` file in the root directory:
+### 2. Environment Setup
+Create a `.env` file with your Supabase credentials:
 ```env
 VITE_SUPABASE_URL=your_supabase_url
 VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
 ```
 
-### 4. Database Setup
-Run the SQL found in `supabase_schema.sql` in your Supabase SQL Editor to set up the necessary tables and RLS policies.
-
-### 5. Run the development server
+### 3. Launch
 ```bash
 npm run dev
 ```
 
-## 📺 Streaming with OBS
+## 🎥 Deployment Guide
 
-1. Open **OBS Studio**.
-2. Go to **Settings > Output** and set **Output Mode** to **Simple**.
-3. Set **Encoder** to **Software (x264)**.
-4. Go to **Settings > Stream** and select **Custom**.
-5. Paste your **RTMP URL** and **Stream Key** from your Nova Dashboard.
-6. Click **Start Streaming**!
+### GitHub Push
+1. Create a new repository on GitHub.
+2. Run the following:
+   ```bash
+   git add .
+   git commit -m "Initial release of Nova Standalone Platform"
+   git branch -M main
+   git remote add origin https://github.com/your-username/your-repo-name.git
+   git push -u origin main
+   ```
 
-## 📜 License
-
-Distributed under the MIT License. See `LICENSE` for more information.
+### Vercel Deployment (Recommended)
+1. Import your repository into **Vercel**.
+2. Set the **Framework Preset** to `Vite`.
+3. Add your Environment Variables (`VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY`).
+4. Click **Deploy**!
 
 ---
 
-Built with 💖 by the Nova Team.
+Built with 💖 by the Nova Team. 🌌🚀

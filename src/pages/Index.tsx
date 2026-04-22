@@ -104,12 +104,6 @@ const Index = () => {
                   Start Streaming
                 </Link>
               </Button>
-              <Button variant="default" size="xl" asChild>
-                <Link to="/login">
-                  <Users className="w-5 h-5" />
-                  Browse Streams
-                </Link>
-              </Button>
             </div>
           </div>
         </section>
@@ -146,6 +140,39 @@ const Index = () => {
                 />
               ))
             )}
+          </div>
+        </section>
+
+        {/* About Us Section */}
+        <section className="border-t border-border/10 bg-[#C17B74]/5 pt-24 pb-32">
+          <div className="container mx-auto px-4">
+            <div className="max-w-4xl mx-auto space-y-12">
+              <div className="text-center space-y-4">
+                <h2 className="text-3xl md:text-5xl font-extrabold tracking-tight text-[#2D1F1E] dark:text-[#F5E8E6]">
+                  About <span className="text-[#C17B74]">Nova</span>
+                </h2>
+                <div className="w-20 h-1 bg-[#C17B74] mx-auto rounded-full" />
+              </div>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-12 text-lg leading-relaxed text-[#2D1F1E]/70 dark:text-[#F5E8E6]/80">
+                <div className="space-y-4">
+                  <h3 className="text-xl font-bold text-[#2D1F1E] dark:text-[#F5E8E6]">Our Mission</h3>
+                  <p>
+                    Nova was built for creators who want more than just a place to stream. We envisioned a truly <strong>standalone ecosystem</strong> where you aren't dependent on external encoders or third-party platforms.
+                  </p>
+                </div>
+                <div className="space-y-4">
+                  <h3 className="text-xl font-bold text-[#2D1F1E] dark:text-[#F5E8E6]">Standalone Power</h3>
+                  <p>
+                    With our integrated <strong>Nova Studio</strong>, you can go live directly from your browser in 1080p. No OBS, no stream keys, just you and your audience in real-time.
+                  </p>
+                </div>
+              </div>
+
+              <div className="pt-12 text-center">
+                <p className="text-sm font-bold uppercase tracking-[0.3em] text-[#C17B74]">Purely Nova. Purely Independent.</p>
+              </div>
+            </div>
           </div>
         </section>
       </div>

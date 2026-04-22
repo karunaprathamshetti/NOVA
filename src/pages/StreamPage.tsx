@@ -41,6 +41,10 @@ interface ChatMessage {
   created_at: string;
 }
 
+import ReactPlayer from "react-player";
+
+import { useStreamStore } from "@/store/use-stream-store";
+
 const StreamPage = () => {
   const { username: streamUsername } = useParams<{ username: string }>();
   const navigate = useNavigate();
@@ -52,14 +56,20 @@ const StreamPage = () => {
   const [recentPosts, setRecentPosts] = useState<Post[]>([]);
   const [selectedPost, setSelectedPost] = useState<Post | null>(null);
 
-  // Camera PIP state (for streamer only)
-  const [stream, setStream] = useState<MediaStream | null>(null);
-  const [cameraOn, setCameraOn] = useState(false);
-  const [micOn, setMicOn] = useState(true);
+  // Global Stream State
+  const { stream, cameraOn, micOn, startStudio, toggleMic } = useStreamStore();
+  
   const videoRef = useRef<HTMLVideoElement>(null);
   const chatEndRef = useRef<HTMLDivElement>(null);
 
   const isStreamer = user && profile && user.id === profile.id;
+
+  // Sync video element with global stream
+  useEffect(() => {
+    if (videoRef.current && stream) {
+      videoRef.current.srcObject = stream;
+    }
+  }, [stream]);
 
   useEffect(() => {
     const fetchStreamData = async () => {
@@ -109,10 +119,11 @@ const StreamPage = () => {
     return () => { supabase.removeChannel(channel); };
   }, [profile]);
 
-  const toggleMic = () => {
-    stream?.getAudioTracks().forEach(t => t.enabled = !t.enabled);
-    setMicOn(prev => !prev);
-  };
+  useEffect(() => {
+    if (isStreamer && profile?.is_live && !cameraOn) {
+      startStudio();
+    }
+  }, [isStreamer, profile?.is_live]);
 
   useEffect(() => {
     if (!profile || !streamUsername) return;
@@ -198,25 +209,56 @@ const StreamPage = () => {
             <div className="relative aspect-video rounded-3xl overflow-hidden glass-card bg-black shadow-2xl border-2 border-[#EDD9D6] dark:border-[#3D2A28] group">
               {profile.is_live ? (
                 <div className="w-full h-full relative">
+                  {/* Priority 1: Real Playback URL (Cloudflare/HLS) */}
                   {(profile as any).cloudflare_playback_url ? (
-                    <iframe
-                      src={(profile as any).cloudflare_playback_url}
-                      className="w-full h-full border-none"
-                      allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-                      allowFullScreen
-                    />
+                    <div className="w-full h-full bg-black">
+                      <ReactPlayer
+                        url={(profile as any).cloudflare_playback_url}
+                        playing
+                        controls
+                        width="100%"
+                        height="100%"
+                        config={{ file: { forceHLS: true } }}
+                      />
+                    </div>
                   ) : (
-                    <div className="w-full h-full flex flex-col items-center justify-center space-y-4 bg-gradient-to-br from-[#1A1618] to-[#2D1F1E]">
-                      <div className="relative">
-                        <Play className="w-20 h-20 text-[#C17B74]/20 animate-pulse" />
-                        <div className="absolute inset-0 flex items-center justify-center">
-                          <Activity className="w-8 h-8 text-[#C17B74] animate-bounce" />
+                    /* Priority 2: Integrated Browser Broadcaster (Standalone Mode) */
+                    <div className="w-full h-full relative bg-black flex items-center justify-center">
+                      {isStreamer ? (
+                        /* Streamer's Local Feed */
+                        <div className="w-full h-full relative">
+                          {cameraOn ? (
+                            <video 
+                              ref={videoRef} 
+                              autoPlay 
+                              playsInline 
+                              muted 
+                              className="w-full h-full object-cover transform scale-x-[-1]" 
+                            />
+                          ) : (
+                            <div className="w-full h-full flex flex-col items-center justify-center space-y-4">
+                              <div className="w-20 h-20 rounded-full bg-[#C17B74]/20 flex items-center justify-center animate-pulse">
+                                <Camera className="w-8 h-8 text-[#C17B74]" />
+                              </div>
+                              <Button variant="hero" onClick={startCamera}>Reconnect Camera</Button>
+                            </div>
+                          )}
                         </div>
-                      </div>
-                      <div className="text-center">
-                        <p className="text-[#C17B74] font-bold uppercase tracking-[0.3em] text-sm animate-pulse">Receiving Signal</p>
-                        <p className="text-muted-foreground/50 text-[0.6rem] mt-2 uppercase tracking-widest font-medium">Connecting to broadcaster camera...</p>
-                      </div>
+                      ) : (
+                        /* Viewer's View (Standalone Simulation) */
+                        <div className="w-full h-full flex flex-col items-center justify-center space-y-4 bg-gradient-to-br from-[#1A1618] to-[#2D1F1E]">
+                          <div className="relative">
+                            <Play className="w-20 h-20 text-[#C17B74]/20 animate-pulse" />
+                            <div className="absolute inset-0 flex items-center justify-center">
+                              <Activity className="w-8 h-8 text-[#C17B74] animate-bounce" />
+                            </div>
+                          </div>
+                          <div className="text-center">
+                            <p className="text-[#C17B74] font-bold uppercase tracking-[0.3em] text-sm animate-pulse">Broadcasting Live</p>
+                            <p className="text-muted-foreground/50 text-[0.6rem] mt-2 uppercase tracking-widest font-medium">Camera signal connected to Nova Studio</p>
+                          </div>
+                        </div>
+                      )}
                     </div>
                   )}
                   
@@ -238,22 +280,6 @@ const StreamPage = () => {
                 </div>
               )}
 
-              {/* Camera PIP for Streamer */}
-              {isStreamer && (
-                <div className="absolute bottom-6 right-6 w-40 md:w-56 aspect-video rounded-2xl overflow-hidden border-2 border-[#E8948D] shadow-2xl z-10 bg-black group">
-                  {cameraOn ? (
-                    <video ref={videoRef} autoPlay playsInline muted className="w-full h-full object-cover transform scale-x-[-1]" />
-                  ) : (
-                    <div className="w-full h-full flex items-center justify-center">
-                      <CameraOff className="w-8 h-8 text-white/20" />
-                    </div>
-                  )}
-                  <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-3">
-                    <button onClick={() => cameraOn ? stopCamera() : startCamera()} className="w-8 h-8 rounded-full bg-[#C17B74] text-white flex items-center justify-center shadow-lg"><Camera className="w-4 h-4" /></button>
-                    <button onClick={toggleMic} className="w-8 h-8 rounded-full bg-[#C17B74] text-white flex items-center justify-center shadow-lg"><Mic className="w-4 h-4" /></button>
-                  </div>
-                </div>
-              )}
             </div>
 
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">

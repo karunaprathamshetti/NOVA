@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Toaster as Sonner } from "@/components/ui/sonner";
@@ -17,11 +17,13 @@ import ResetPassword from "./pages/ResetPassword";
 import AuthCallback from "./pages/AuthCallback";
 import NotFound from "./pages/NotFound";
 import { useAuthStore } from "@/store/use-auth-store";
+import { SplashScreen } from "./components/SplashScreen";
 
 const queryClient = new QueryClient();
 
 const AppContent = () => {
   const initialize = useAuthStore((state) => state.initialize);
+  const [showSplash, setShowSplash] = useState(true);
 
   useEffect(() => {
     initialize();
@@ -31,26 +33,32 @@ const AppContent = () => {
     <ThemeProvider defaultTheme="light" storageKey="vite-ui-theme">
       <QueryClientProvider client={queryClient}>
         <TooltipProvider>
-          <Toaster />
-          <Sonner />
+          {showSplash ? (
+            <SplashScreen onComplete={() => setShowSplash(false)} />
+          ) : (
+            <>
+              <Toaster />
+              <Sonner />
 
-          {/* Global animated rose particle background */}
-          <AnimatedBackground />
+              {/* Global animated rose particle background */}
+              <AnimatedBackground />
 
-          <BrowserRouter>
-            <Navbar />
-            <Routes>
-              <Route path="/"                   element={<Index />} />
-              <Route path="/login"              element={<Login />} />
-              <Route path="/signup"             element={<Signup />} />
-              <Route path="/dashboard"          element={<Dashboard />} />
-              <Route path="/stream/:username"   element={<StreamPage />} />
-              <Route path="/profile/:username"  element={<Profile />} />
-              <Route path="/reset-password"     element={<ResetPassword />} />
-              <Route path="/auth/callback"      element={<AuthCallback />} />
-              <Route path="*"                   element={<NotFound />} />
-            </Routes>
-          </BrowserRouter>
+              <BrowserRouter>
+                <Navbar />
+                <Routes>
+                  <Route path="/"                   element={<Index />} />
+                  <Route path="/login"              element={<Login />} />
+                  <Route path="/signup"             element={<Signup />} />
+                  <Route path="/dashboard"          element={<Dashboard />} />
+                  <Route path="/stream/:username"   element={<StreamPage />} />
+                  <Route path="/profile/:username"  element={<Profile />} />
+                  <Route path="/reset-password"     element={<ResetPassword />} />
+                  <Route path="/auth/callback"      element={<AuthCallback />} />
+                  <Route path="*"                   element={<NotFound />} />
+                </Routes>
+              </BrowserRouter>
+            </>
+          )}
         </TooltipProvider>
       </QueryClientProvider>
     </ThemeProvider>
