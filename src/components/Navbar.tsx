@@ -182,7 +182,7 @@ const Navbar = () => {
               <Tv className="w-5 h-5 text-white" />
             </div>
             <span className="text-xl font-bold tracking-tight hidden sm:block" style={{ color: theme === 'dark' ? '#F5E8E6' : '#2D1F1E' }}>
-              StreamFlow
+              Nova
             </span>
           </Link>
 

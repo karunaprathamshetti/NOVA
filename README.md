@@ -1,8 +1,8 @@
-# 🌊 StreamFlow
+# 🌌 Nova
 
-**StreamFlow** is a premium, real-time social streaming platform designed for creators and communities. Built with high-performance technologies and a stunning **Rose & Slate** design aesthetic, StreamFlow offers a seamless experience for broadcasters and viewers alike.
+**Nova** is a premium, real-time social streaming platform designed for creators and communities. Built with high-performance technologies and a stunning **Rose & Slate** design aesthetic, Nova offers a seamless experience for broadcasters and viewers alike.
 
-![StreamFlow Preview](https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&q=80&w=2000)
+![Nova Preview](https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&q=80&w=2000)
 
 ## ✨ Core Features
 
@@ -56,7 +56,7 @@ npm run dev
 2. Go to **Settings > Output** and set **Output Mode** to **Simple**.
 3. Set **Encoder** to **Software (x264)**.
 4. Go to **Settings > Stream** and select **Custom**.
-5. Paste your **RTMP URL** and **Stream Key** from your StreamFlow Dashboard.
+5. Paste your **RTMP URL** and **Stream Key** from your Nova Dashboard.
 6. Click **Start Streaming**!
 
 ## 📜 License
@@ -65,4 +65,4 @@ Distributed under the MIT License. See `LICENSE` for more information.
 
 ---
 
-Built with 💖 by the StreamFlow Team.
+Built with 💖 by the Nova Team.
