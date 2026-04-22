@@ -26,22 +26,21 @@ const NeoToggle = ({ checked = false, onChange, label }: NeoToggleProps) => {
       <div
         className={cn(
           "relative w-14 h-7 rounded-full transition-all duration-300",
-          isOn
-            ? "bg-primary shadow-[var(--neon-glow)]"
-            : "bg-muted shadow-[var(--neu-inset)]"
+          isOn ? "" : ""
         )}
         style={{
+          background: isOn ? "#C17B74" : "#EDD9D6",
           boxShadow: isOn
-            ? "0 0 20px rgba(59, 130, 246, 0.4)"
-            : "inset 3px 3px 6px rgba(0, 20, 60, 0.1), inset -2px -2px 5px rgba(255, 255, 255, 0.5)"
+            ? "0 0 16px rgba(193, 123, 116, 0.6)"
+            : "inset 3px 3px 6px rgba(193, 123, 116, 0.15), inset -2px -2px 5px rgba(255, 255, 255, 0.8)"
         }}
       >
         <div
           className={cn(
             "absolute top-0.5 w-6 h-6 rounded-full transition-all duration-300 shadow-md",
             isOn
-              ? "left-[calc(100%-1.625rem)] bg-primary-foreground"
-              : "left-0.5 bg-card-foreground/30"
+              ? "left-[calc(100%-1.625rem)] bg-white"
+              : "left-0.5 bg-white/60"
           )}
         />
       </div>

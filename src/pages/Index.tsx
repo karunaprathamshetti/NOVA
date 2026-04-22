@@ -4,52 +4,97 @@ import StreamCardSkeleton from "@/components/StreamCardSkeleton";
 import { Link } from "react-router-dom";
 import { Play, Radio, Users } from "lucide-react";
 import { useState, useEffect } from "react";
-import heroBg from "@/assets/hero-bg.jpg";
+import { supabase } from "@/lib/supabase";
 
-const MOCK_STREAMS = [
-  { username: "neon_gamer", title: "Ranked Grind to Diamond 💎", category: "Valorant", viewerCount: 3420, isLive: true },
-  { username: "chill_dev", title: "Building a SaaS in public", category: "Software Dev", viewerCount: 891, isLive: true },
-  { username: "art_queen", title: "Digital painting session ✨", category: "Art", viewerCount: 2105, isLive: true },
-  { username: "speedrunner42", title: "Any% WR attempts", category: "Celeste", viewerCount: 5670, isLive: true },
-  { username: "music_mike", title: "Lo-fi beats & chill vibes", category: "Music", viewerCount: 1340, isLive: true },
-  { username: "retro_plays", title: "N64 classics marathon", category: "Retro Gaming", viewerCount: 780, isLive: true },
-];
+interface LiveStream {
+  username: string;
+  stream_title: string;
+  category: string;
+  viewer_count: number;
+  is_live: boolean;
+  avatar_url?: string;
+}
 
 const Index = () => {
   const [loading, setLoading] = useState(true);
+  const [streams, setStreams] = useState<LiveStream[]>([]);
 
   useEffect(() => {
-    const timer = setTimeout(() => setLoading(false), 1200);
-    return () => clearTimeout(timer);
+    const fetchLiveStreams = async () => {
+      setLoading(true);
+      const { data, error } = await supabase
+        .from('profiles')
+        .select('username, stream_title, category, viewer_count, is_live, avatar_url')
+        .eq('is_live', true)
+        .order('viewer_count', { ascending: false });
+
+      if (data && !error) {
+        setStreams(data as LiveStream[]);
+      }
+      setLoading(false);
+    };
+
+    fetchLiveStreams();
+
+    const channel = supabase.channel('live-streams')
+      .on('postgres_changes', {
+        event: 'UPDATE',
+        schema: 'public',
+        table: 'profiles',
+        filter: 'is_live=eq.true'
+      }, (payload) => {
+        setStreams(prev => prev.map(s => s.username === payload.new.username ? { ...s, ...payload.new } : s));
+      })
+      .on('postgres_changes', {
+        event: '*',
+        schema: 'public',
+        table: 'profiles',
+      }, () => {
+        // Fallback or handle new streams / stream ends
+        fetchLiveStreams();
+      })
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
   }, []);
 
   return (
     <div className="min-h-screen pt-16 relative">
-      {/* Hero BG */}
-      <div className="absolute inset-0 z-0">
-        <img src={heroBg} alt="" className="w-full h-full object-cover opacity-20" width={1920} height={1080} />
-        <div className="absolute inset-0 gradient-bg" />
-      </div>
-
       <div className="relative z-10">
         {/* Hero */}
         <section className="container mx-auto px-4 py-20 md:py-28 text-center">
-          <div className="max-w-3xl mx-auto space-y-6" style={{ animation: "fade-in-up 0.8s ease-out forwards" }}>
-            <div className="inline-flex items-center gap-2 glass-card-strong px-4 py-1.5 text-xs font-semibold text-primary mb-2">
+          <div
+            className="max-w-3xl mx-auto space-y-6"
+            style={{ animation: "fade-in-up 0.8s ease-out forwards" }}
+          >
+            {/* Beta Badge */}
+            <div
+              className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold mb-2"
+              style={{
+                background: 'rgba(193,123,116,0.15)',
+                border: '1px solid rgba(193,123,116,0.3)',
+                color: '#C17B74',
+              }}
+            >
               <Radio className="w-3.5 h-3.5" />
               Now in Beta
             </div>
-            <h1 className="text-4xl md:text-6xl lg:text-7xl font-extrabold tracking-tight leading-[1.1]" style={{ color: "hsl(210, 30%, 95%)" }}>
+
+            <h1 className="text-4xl md:text-6xl lg:text-7xl font-extrabold tracking-tight leading-[1.1] text-[#2D1F1E] dark:text-[#F5E8E6]">
               Go Live.{" "}
-              <span className="text-primary drop-shadow-[0_0_25px_rgba(59,130,246,0.5)]">
+              <span className="text-[#C17B74] dark:text-[#E8948D] drop-shadow-[0_0_20px_rgba(193,123,116,0.4)]">
                 Your Stream.
               </span>
               <br />
               Your Rules.
             </h1>
-            <p className="text-lg md:text-xl max-w-xl mx-auto" style={{ color: "hsl(210, 15%, 70%)" }}>
+
+            <p className="text-lg md:text-xl max-w-xl mx-auto text-[#2D1F1E]/60 dark:text-[#F5E8E6]/70">
               Stream to the world with zero hassle. Neo-tactile experience, real-time chat, and full control over your broadcast.
             </p>
+
             <div className="flex items-center justify-center gap-4 pt-4">
               <Button variant="hero" size="xl" asChild>
                 <Link to="/signup">
@@ -74,15 +119,29 @@ const Index = () => {
               <span className="live-dot" />
               LIVE
             </div>
-            <h2 className="text-2xl font-bold" style={{ color: "hsl(210, 30%, 92%)" }}>Live Channels</h2>
+            <h2 className="text-2xl font-bold text-foreground">Live Channels</h2>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
             {loading ? (
               <StreamCardSkeleton count={6} />
+            ) : streams.length === 0 ? (
+              <div className="col-span-1 sm:col-span-2 lg:col-span-3 text-center py-20 glass-card">
+                <h3 className="text-xl font-medium text-muted-foreground">
+                  No streams live right now. Be the first to go live!
+                </h3>
+              </div>
             ) : (
-              MOCK_STREAMS.map((stream) => (
-                <StreamCard key={stream.username} {...stream} />
+              streams.map((stream) => (
+                <StreamCard
+                  key={stream.username}
+                  username={stream.username}
+                  title={stream.stream_title}
+                  category={stream.category}
+                  viewerCount={stream.viewer_count}
+                  isLive={stream.is_live}
+                  avatarUrl={stream.avatar_url}
+                />
               ))
             )}
           </div>
