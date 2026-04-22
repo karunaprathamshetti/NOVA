@@ -64,38 +64,40 @@ const Index = () => {
     <div className="min-h-screen pt-16 relative">
       <div className="relative z-10">
         {/* Hero */}
-        <section className="container mx-auto px-4 py-20 md:py-28 text-center">
+        <section className="container mx-auto px-4 py-20 md:py-28">
           <div
-            className="max-w-3xl mx-auto space-y-6"
+            className="flex flex-col lg:flex-row items-center justify-between gap-12"
             style={{ animation: "fade-in-up 0.8s ease-out forwards" }}
           >
-            {/* Beta Badge */}
-            <div
-              className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold mb-2"
-              style={{
-                background: 'rgba(193,123,116,0.15)',
-                border: '1px solid rgba(193,123,116,0.3)',
-                color: '#C17B74',
-              }}
-            >
-              <Radio className="w-3.5 h-3.5" />
-              Now in Beta
+            <div className="flex-1 space-y-6">
+              {/* Beta Badge */}
+              <div
+                className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold mb-2"
+                style={{
+                  background: 'rgba(193,123,116,0.15)',
+                  border: '1px solid rgba(193,123,116,0.3)',
+                  color: '#C17B74',
+                }}
+              >
+                <Radio className="w-3.5 h-3.5" />
+                Now in Beta
+              </div>
+
+              <h1 className="text-4xl md:text-6xl lg:text-7xl font-extrabold tracking-tight leading-[1.1] text-[#2D1F1E] dark:text-[#F5E8E6]">
+                Go Live.{" "}
+                <span className="text-[#C17B74] dark:text-[#E8948D] drop-shadow-[0_0_20px_rgba(193,123,116,0.4)]">
+                  Your Stream.
+                </span>
+                <br />
+                Your Rules.
+              </h1>
+
+              <p className="text-lg md:text-xl text-[#2D1F1E]/60 dark:text-[#F5E8E6]/70 max-w-xl">
+                Stream to the world with zero hassle. Nova-tactile experience, real-time chat, and full control over your broadcast.
+              </p>
             </div>
 
-            <h1 className="text-4xl md:text-6xl lg:text-7xl font-extrabold tracking-tight leading-[1.1] text-[#2D1F1E] dark:text-[#F5E8E6]">
-              Go Live.{" "}
-              <span className="text-[#C17B74] dark:text-[#E8948D] drop-shadow-[0_0_20px_rgba(193,123,116,0.4)]">
-                Your Stream.
-              </span>
-              <br />
-              Your Rules.
-            </h1>
-
-            <p className="text-lg md:text-xl max-w-xl mx-auto text-[#2D1F1E]/60 dark:text-[#F5E8E6]/70">
-              Stream to the world with zero hassle. Neo-tactile experience, real-time chat, and full control over your broadcast.
-            </p>
-
-            <div className="flex items-center justify-center gap-4 pt-4">
+            <div className="flex flex-col sm:flex-row items-center gap-4 shrink-0">
               <Button variant="hero" size="xl" asChild>
                 <Link to="/signup">
                   <Play className="w-5 h-5" />

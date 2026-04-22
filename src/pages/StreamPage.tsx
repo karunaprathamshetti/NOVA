@@ -109,25 +109,68 @@ const StreamPage = () => {
     return () => { supabase.removeChannel(channel); };
   }, [profile]);
 
-  // Camera logic for streamer PIP
-  async function startCamera() {
-    try {
-      const ms = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
-      setStream(ms);
-      setCameraOn(true);
-      if (videoRef.current) videoRef.current.srcObject = ms;
-    } catch (err) { toast.error("Camera access denied"); }
-  }
-
-  function stopCamera() {
-    stream?.getTracks().forEach(t => t.stop());
-    setStream(null);
-    setCameraOn(false);
-  }
-
   const toggleMic = () => {
     stream?.getAudioTracks().forEach(t => t.enabled = !t.enabled);
     setMicOn(prev => !prev);
+  };
+
+  useEffect(() => {
+    if (!profile || !streamUsername) return;
+
+    // 1. Fetch initial messages
+    const fetchMessages = async () => {
+      const { data } = await supabase
+        .from('messages')
+        .select('*')
+        .eq('stream_username', streamUsername)
+        .order('created_at', { ascending: true })
+        .limit(50);
+      if (data) setChatMessages(data as any);
+    };
+
+    fetchMessages();
+
+    // 2. Subscribe to real-time changes
+    const channel = supabase.channel(`chat_${streamUsername}`)
+      .on('postgres_changes', { 
+        event: 'INSERT', 
+        schema: 'public', 
+        table: 'messages', 
+        filter: `stream_username=eq.${streamUsername}` 
+      }, (payload) => {
+        setChatMessages(prev => [...prev, payload.new as any]);
+      })
+      .subscribe();
+
+    return () => { supabase.removeChannel(channel); };
+  }, [profile, streamUsername]);
+
+  useEffect(() => {
+    if (chatEndRef.current) {
+      chatEndRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [chatMessages]);
+
+  const handleSendMessage = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!user || !newMessage.trim() || !streamUsername) {
+      if (!user) toast.error("Log in to chat");
+      return;
+    }
+
+    const { error } = await supabase.from('messages').insert({
+      stream_username: streamUsername,
+      user_id: user.id,
+      username: profile?.id === user.id ? profile.username : (user as any).user_metadata?.username || user.email?.split('@')[0],
+      avatar_url: (user as any).user_metadata?.avatar_url,
+      content: newMessage.trim()
+    });
+
+    if (error) {
+      toast.error("Message failed");
+    } else {
+      setNewMessage("");
+    }
   };
 
   if (loading) return <div className="min-h-screen pt-24"><NeonSpinner /></div>;
@@ -152,22 +195,46 @@ const StreamPage = () => {
           
           {/* Stream Player Area */}
           <div className="lg:col-span-3 space-y-6">
-            <div className="relative aspect-video rounded-3xl overflow-hidden glass-card bg-black shadow-2xl border-2 border-[#EDD9D6] dark:border-[#3D2A28]">
+            <div className="relative aspect-video rounded-3xl overflow-hidden glass-card bg-black shadow-2xl border-2 border-[#EDD9D6] dark:border-[#3D2A28] group">
               {profile.is_live ? (
-                <div className="w-full h-full flex flex-col items-center justify-center space-y-4">
-                  <Play className="w-20 h-20 text-[#C17B74]/40 animate-pulse" />
-                  <p className="text-[#C17B74] font-bold uppercase tracking-[0.2em] text-sm animate-pulse">Live Stream Active</p>
+                <div className="w-full h-full relative">
+                  {(profile as any).cloudflare_playback_url ? (
+                    <iframe
+                      src={(profile as any).cloudflare_playback_url}
+                      className="w-full h-full border-none"
+                      allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                      allowFullScreen
+                    />
+                  ) : (
+                    <div className="w-full h-full flex flex-col items-center justify-center space-y-4 bg-gradient-to-br from-[#1A1618] to-[#2D1F1E]">
+                      <div className="relative">
+                        <Play className="w-20 h-20 text-[#C17B74]/20 animate-pulse" />
+                        <div className="absolute inset-0 flex items-center justify-center">
+                          <Activity className="w-8 h-8 text-[#C17B74] animate-bounce" />
+                        </div>
+                      </div>
+                      <div className="text-center">
+                        <p className="text-[#C17B74] font-bold uppercase tracking-[0.3em] text-sm animate-pulse">Receiving Signal</p>
+                        <p className="text-muted-foreground/50 text-[0.6rem] mt-2 uppercase tracking-widest font-medium">Connecting to broadcaster camera...</p>
+                      </div>
+                    </div>
+                  )}
                   
                   {/* Top Badge */}
-                  <div className="absolute top-6 left-6 flex items-center gap-2 px-3 py-1.5 rounded-full bg-red-500/20 border border-red-500/30 backdrop-blur-md">
+                  <div className="absolute top-6 left-6 flex items-center gap-2 px-3 py-1.5 rounded-full bg-red-500/20 border border-red-500/30 backdrop-blur-md z-10">
                     <div className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />
                     <span className="text-[0.65rem] font-bold text-red-500 uppercase tracking-widest">Live</span>
                   </div>
                 </div>
               ) : (
-                <div className="w-full h-full flex flex-col items-center justify-center space-y-4">
-                  <Activity className="w-12 h-12 text-muted-foreground/20" />
-                  <p className="text-muted-foreground font-bold uppercase tracking-widest text-sm">Offline</p>
+                <div className="w-full h-full flex flex-col items-center justify-center space-y-4 bg-[#1A1618]">
+                  <div className="w-20 h-20 rounded-full bg-muted/5 flex items-center justify-center border border-muted/10">
+                    <Activity className="w-8 h-8 text-muted-foreground/20" />
+                  </div>
+                  <div className="text-center">
+                    <p className="text-muted-foreground font-bold uppercase tracking-widest text-sm">Offline</p>
+                    <p className="text-muted-foreground/30 text-[0.6rem] mt-1 uppercase">Streamer is not broadcasting</p>
+                  </div>
                 </div>
               )}
 
@@ -245,29 +312,37 @@ const StreamPage = () => {
                 <span className="font-bold text-sm uppercase tracking-widest">Live Chat</span>
                 <Users className="w-4 h-4 text-muted-foreground" />
               </div>
-              <div className="flex-1 overflow-y-auto p-4 space-y-4">
-                {/* Mock Chat */}
-                <div className="space-y-3">
-                  {[
-                    { u: 'Alex', m: 'This stream is amazing! 🔥' },
-                    { u: 'Sarah', m: 'Check out his new post below!' },
-                    { u: 'Mike', m: 'How do I follow?' }
-                  ].map((msg, i) => (
-                    <div key={i} className="text-sm">
-                      <span className="font-bold text-[#C17B74] mr-2">{msg.u}:</span>
-                      <span className="text-card-foreground/80">{msg.m}</span>
-                    </div>
-                  ))}
-                </div>
+              <div className="flex-1 overflow-y-auto p-4 space-y-4 no-scrollbar">
+                {chatMessages.length === 0 ? (
+                  <div className="h-full flex flex-col items-center justify-center opacity-30 text-center p-8">
+                    <MessageCircle className="w-12 h-12 mb-2" />
+                    <p className="text-xs font-bold uppercase tracking-widest">No messages yet</p>
+                    <p className="text-[0.6rem] mt-1">Be the first to say hello!</p>
+                  </div>
+                ) : (
+                  <div className="space-y-4">
+                    {chatMessages.map((msg) => (
+                      <div key={msg.id} className="text-sm animate-in fade-in slide-in-from-bottom-2 duration-300">
+                        <span className="font-bold text-[#C17B74] mr-2">{msg.username}:</span>
+                        <span className="text-card-foreground/80 break-words">{msg.content}</span>
+                      </div>
+                    ))}
+                    <div ref={chatEndRef} />
+                  </div>
+                )}
               </div>
               <div className="p-4 border-t border-[#EDD9D6] dark:border-[#3D2A28]">
-                <form onSubmit={(e) => e.preventDefault()} className="flex items-center gap-2">
+                <form onSubmit={handleSendMessage} className="flex items-center gap-2">
                   <input
                     type="text"
+                    value={newMessage}
+                    onChange={(e) => setNewMessage(e.target.value)}
                     placeholder="Send a message..."
                     className="neu-input flex-1 h-10 px-4 text-xs"
                   />
-                  <Button variant="primary" size="sm" className="h-10 w-10 p-0"><Send className="w-4 h-4" /></Button>
+                  <Button variant="primary" size="sm" type="submit" className="h-10 w-10 p-0" disabled={!newMessage.trim()}>
+                    <Send className="w-4 h-4" />
+                  </Button>
                 </form>
               </div>
             </div>

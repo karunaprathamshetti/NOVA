@@ -166,46 +166,53 @@ const Dashboard = () => {
               </div>
             </div>
 
-            {/* Encoder Info */}
-            <div className="glass-card p-6 space-y-6">
-              <h2 className="text-xl font-bold flex items-center gap-2">
-                <Monitor className="w-5 h-5 text-[#C17B74]" /> Encoder Setup
-              </h2>
-              <div className="space-y-4">
-                <div className="space-y-2">
-                  <label className="text-xs font-bold text-muted-foreground uppercase tracking-widest">RTMP URL</label>
-                  <div className="flex gap-2">
-                    <div className="neu-input flex-1 h-12 px-4 flex items-center text-xs font-mono overflow-hidden">{profile.rtmp_url}</div>
-                    <button onClick={() => copyToClipboard(profile.rtmp_url, 'url')} className="neu-button w-12 h-12 flex items-center justify-center rounded-full">
-                      {copiedUrl ? <Check className="w-4 h-4 text-green-500" /> : <Copy className="w-4 h-4" />}
-                    </button>
-                  </div>
-                </div>
-                <div className="space-y-2">
-                  <label className="text-xs font-bold text-muted-foreground uppercase tracking-widest">Stream Key</label>
-                  <div className="flex gap-2">
-                    <div className="neu-input flex-1 h-12 px-4 flex items-center text-xs font-mono overflow-hidden">
-                      {showKey ? profile.stream_key : "••••••••••••••••••••••••••••••••"}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              {/* Encoder Info */}
+              <div className="glass-card p-6 space-y-6">
+                <h2 className="text-xl font-bold flex items-center gap-2">
+                  <Monitor className="w-5 h-5 text-[#C17B74]" /> Encoder Setup
+                </h2>
+                <div className="space-y-4">
+                  <div className="space-y-2">
+                    <label className="text-xs font-bold text-muted-foreground uppercase tracking-widest">RTMP URL</label>
+                    <div className="flex gap-2">
+                      <div className="neu-input flex-1 h-12 px-4 flex items-center text-xs font-mono overflow-hidden">{profile.rtmp_url}</div>
+                      <button onClick={() => copyToClipboard(profile.rtmp_url, 'url')} className="neu-button w-12 h-12 flex items-center justify-center rounded-full">
+                        {copiedUrl ? <Check className="w-4 h-4 text-green-500" /> : <Copy className="w-4 h-4" />}
+                      </button>
                     </div>
-                    <button onClick={() => setShowKey(!showKey)} className="neu-button w-12 h-12 flex items-center justify-center rounded-full">
-                      {showKey ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-                    </button>
-                    <button onClick={() => copyToClipboard(profile.stream_key, 'key')} className="neu-button w-12 h-12 flex items-center justify-center rounded-full">
-                      {copiedKey ? <Check className="w-4 h-4 text-green-500" /> : <Copy className="w-4 h-4" />}
-                    </button>
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-xs font-bold text-muted-foreground uppercase tracking-widest">Stream Key</label>
+                    <div className="flex gap-2">
+                      <div className="neu-input flex-1 h-12 px-4 flex items-center text-xs font-mono overflow-hidden">
+                        {showKey ? profile.stream_key : "••••••••••••••••••••••••••••••••"}
+                      </div>
+                      <button onClick={() => setShowKey(!showKey)} className="neu-button w-12 h-12 flex items-center justify-center rounded-full">
+                        {showKey ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                      </button>
+                      <button onClick={() => copyToClipboard(profile.stream_key, 'key')} className="neu-button w-12 h-12 flex items-center justify-center rounded-full">
+                        {copiedKey ? <Check className="w-4 h-4 text-green-500" /> : <Copy className="w-4 h-4" />}
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
 
-            {/* Create Post */}
-            <button 
-              onClick={() => setShowCreateModal(true)}
-              className="w-full p-8 border-2 border-dashed border-[#C17B74]/40 rounded-3xl flex items-center justify-center gap-4 bg-[#C17B74]/5 hover:bg-[#C17B74]/10 transition-all group"
-            >
-              <Plus className="w-6 h-6 text-[#C17B74] group-hover:scale-110 transition-transform" />
-              <span className="text-lg font-bold text-[#C17B74]">Create New Post</span>
-            </button>
+              {/* Create Post */}
+              <button 
+                onClick={() => setShowCreateModal(true)}
+                className="w-full h-full p-8 border-2 border-dashed border-[#C17B74]/40 rounded-3xl flex flex-col items-center justify-center gap-4 bg-[#C17B74]/5 hover:bg-[#C17B74]/10 transition-all group"
+              >
+                <div className="w-16 h-16 rounded-full bg-[#C17B74]/10 flex items-center justify-center group-hover:scale-110 transition-transform">
+                  <Plus className="w-8 h-8 text-[#C17B74]" />
+                </div>
+                <div className="text-center">
+                  <span className="text-xl font-bold text-[#C17B74] block">Create New Post</span>
+                  <p className="text-xs text-muted-foreground mt-1">Share photos or videos with followers</p>
+                </div>
+              </button>
+            </div>
           </div>
 
           {/* Sidebar */}
@@ -230,14 +237,19 @@ const Dashboard = () => {
 
             <div className="glass-card p-6 space-y-4">
               <h2 className="text-sm font-bold uppercase tracking-widest flex items-center gap-2">
-                <Info className="w-4 h-4 text-[#C17B74]" /> Quick Guide
+                <Info className="w-4 h-4 text-[#C17B74]" /> OBS Stability Guide
               </h2>
-              <p className="text-xs text-muted-foreground leading-relaxed">
-                1. Open OBS Studio <br />
-                2. Settings → Stream → Custom <br />
-                3. Paste RTMP URL and Stream Key <br />
-                4. Start Streaming in OBS.
-              </p>
+              <div className="space-y-3 text-[0.7rem] text-muted-foreground leading-relaxed">
+                <p>To stop stream disconnects, use these exact settings in OBS:</p>
+                <ul className="list-disc pl-4 space-y-2">
+                  <li><span className="text-card-foreground font-bold">Output → Mode:</span> Simple</li>
+                  <li><span className="text-card-foreground font-bold">Video Bitrate:</span> 2500 - 3500 Kbps</li>
+                  <li><span className="text-card-foreground font-bold">Encoder:</span> Software (x264)</li>
+                  <li><span className="text-card-foreground font-bold">Keyframe Interval:</span> 2 <span className="text-[#C17B74] font-medium">(Critical for stability)</span></li>
+                </ul>
+                <div className="h-px bg-border/10 my-2" />
+                <p>Then paste your <span className="text-[#C17B74] font-medium">RTMP URL</span> and <span className="text-[#C17B74] font-medium">Stream Key</span> and click <span className="text-card-foreground font-bold">Start Streaming</span>.</p>
+              </div>
             </div>
           </div>
         </div>
