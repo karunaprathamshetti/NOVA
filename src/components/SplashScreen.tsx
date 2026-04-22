@@ -46,7 +46,7 @@ export const SplashScreen = ({ onComplete }: { onComplete: () => void }) => {
         <div className={`absolute inset-0 bg-[#1A1618]/80 transition-opacity duration-1500 ${isExiting ? 'opacity-100' : 'opacity-0'}`} />
       </div>
 
-      <div className={`relative w-full max-w-lg px-8 flex flex-col items-center justify-center gap-12 transition-all duration-1000 ${isExiting ? 'scale-90 blur-md opacity-0' : 'scale-100 opacity-100'}`}>
+      <div className={`relative w-full max-w-lg px-8 flex flex-col items-center justify-center gap-12 pt-24 transition-all duration-1000 ${isExiting ? 'scale-90 blur-md opacity-0' : 'scale-100 opacity-100'}`}>
         {/* Logo/Brand Section */}
         <div className="text-center space-y-4">
           <div className="flex items-center justify-center gap-3 mb-4">

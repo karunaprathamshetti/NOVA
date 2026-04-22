@@ -51,14 +51,22 @@ const Login = () => {
   };
 
   const handleGoogleLogin = async () => {
-    // Enable Google provider in Supabase Auth settings
+    // Ensure origin doesn't have a double slash
+    const origin = window.location.origin.replace(/\/$/, "");
+    const redirectTo = `${origin}/auth/callback`;
+    
+    console.log("DEBUG: Supabase Redirect URL ->", redirectTo);
+    
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
-        redirectTo: window.location.origin + '/auth/callback'
+        redirectTo: redirectTo
       }
     });
-    if (error) toast.error("Google login failed. Please try again.");
+    if (error) {
+      console.error("Supabase OAuth Error:", error);
+      toast.error("Google login failed. Please try again.");
+    }
   };
 
   const handleResetPassword = async (e: React.FormEvent) => {
