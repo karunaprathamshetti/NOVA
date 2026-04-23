@@ -111,22 +111,61 @@ const Profile = () => {
   const handleFollow = async () => {
     if (!profile) return;
     if (!user) return navigate("/login");
+    
+    // Save current state in case we need to revert
+    const previousFollowing = following;
+    const previousCount = profile.follower_count;
+    
     try {
       if (following) {
+        // Optimistic UI update
         setFollowing(false);
-        setProfile(prev => prev ? { ...prev, follower_count: prev.follower_count - 1 } : prev);
+        setProfile(prev => prev ? { ...prev, follower_count: Math.max(0, prev.follower_count - 1) } : prev);
+        
+        // Database updates
         await supabase.from('follows').delete().eq('follower_id', user.id).eq('following_id', profile.id);
+        await supabase.rpc('decrement_follower_count', { user_id: profile.id }).catch(async () => {
+             // Fallback if RPC doesn't exist
+             await supabase.from('profiles').update({ follower_count: Math.max(0, previousCount - 1) }).eq('id', profile.id);
+        });
+        toast.success(`Unfollowed ${profile.username}`);
+        
       } else {
+        // Optimistic UI update
         setFollowing(true);
         setProfile(prev => prev ? { ...prev, follower_count: prev.follower_count + 1 } : prev);
-        await supabase.from('follows').insert({ follower_id: user.id, following_id: profile.id });
-        await supabase.from('notifications').insert({
-          user_id: profile.id, sender_id: user.id, sender_username: user.user_metadata?.username || user.email?.split('@')[0],
-          sender_avatar: user.user_metadata?.avatar_url || "", type: 'follow',
-          message: `${user.user_metadata?.username || user.email?.split('@')[0]} started following you`
+        
+        // Database updates
+        const { error } = await supabase.from('follows').insert({ follower_id: user.id, following_id: profile.id });
+        if (error) throw error;
+        
+        await supabase.rpc('increment_follower_count', { user_id: profile.id }).catch(async () => {
+             // Fallback if RPC doesn't exist
+             await supabase.from('profiles').update({ follower_count: previousCount + 1 }).eq('id', profile.id);
         });
+        toast.success(`Following ${profile.username}!`);
+        
+        // Try to send notification, but don't break if it fails
+        try {
+          await supabase.from('notifications').insert({
+            user_id: profile.id, 
+            sender_id: user.id, 
+            sender_username: user.user_metadata?.username || user.email?.split('@')[0],
+            sender_avatar: user.user_metadata?.avatar_url || "", 
+            type: 'follow',
+            message: `${user.user_metadata?.username || user.email?.split('@')[0]} started following you`
+          });
+        } catch (notifErr) {
+          console.warn("Notification failed, but follow succeeded", notifErr);
+        }
       }
-    } catch (err) { console.error(err); }
+    } catch (err: any) { 
+      console.error("Follow error:", err);
+      toast.error(err.message || "Failed to update follow status.");
+      // Revert optimistic update on failure
+      setFollowing(previousFollowing);
+      setProfile(prev => prev ? { ...prev, follower_count: previousCount } : prev);
+    }
   };
 
   const openListModal = async (type: 'followers' | 'following') => {
