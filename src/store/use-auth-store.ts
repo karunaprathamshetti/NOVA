@@ -30,12 +30,6 @@ export const useAuthStore = create<AuthState>((set) => ({
     supabase.auth.onAuthStateChange(async (event, session) => {
       set({ session, user: session?.user ?? null, loading: false });
       
-      // Auto-Redirect for Password Recovery (Bypasses Vercel 404)
-      if (event === 'PASSWORD_RECOVERY') {
-        window.location.href = '/reset-password';
-        return;
-      }
-      
       // Handle Profile Creation for new OAuth users
       if (event === 'SIGNED_IN' && session?.user) {
         const user = session.user;
