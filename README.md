@@ -9,6 +9,8 @@
 - 📹 **Nova Studio**: Direct-from-browser broadcasting in 1080p. No external encoders required.
 - 📡 **Global Stream Persistence**: Our custom-built 'Global Control Room' (Zustand-powered) keeps your camera feed active even as you navigate between pages.
 - 🌍 **Cinematic 3D Intro**: A high-end interactive 3D globe introduction with real-time global node synchronization and a dramatic **Heavy Mist transition**.
+- 🤝 **Robust Social Graph**: Advanced follow logic with automatic database syncing, isolated notification handling, and optimistic UI updates for a seamless user experience.
+- 🚦 **Advanced SPA Routing**: Custom Vercel routing configuration (`vercel.json`) that guarantees zero 404 errors for complex OAuth redirects and password recoveries.
 - 🔍 **Real-time Discovery**: Instant profile search with live-status indicators and PostgreSQL Real-time synchronization.
 - 📱 **Community Hub**: Share photos, videos, and text posts directly with your audience.
 - 🔔 **Smart Notifications**: Real-time alerts for follows, going live, and community milestones.
