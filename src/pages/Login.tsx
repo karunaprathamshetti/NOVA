@@ -51,9 +51,8 @@ const Login = () => {
   };
 
   const handleGoogleLogin = async () => {
-    // Ensure origin doesn't have a double slash
-    const origin = window.location.origin.replace(/\/$/, "");
-    const redirectTo = `${origin}/auth/callback`;
+    // Redirect directly to home page to avoid Vercel 404s
+    const redirectTo = window.location.origin + "/";
     
     console.log("DEBUG: Supabase Redirect URL ->", redirectTo);
     
