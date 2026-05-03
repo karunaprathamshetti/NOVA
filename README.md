@@ -66,5 +66,5 @@ npm run dev
 4. Click **Deploy**!
 
 ---
-
+Turning ideas into a seamless streaming experience, all in one hub.
 Built with 💖 by the Nova Team. 🌌🚀
